@@ -1,31 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import loginService from '../services/login';
+import React, { useState } from 'react';
 
-const Login = ({ errorMessage, setErrorMessage, setUser }) => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-
-    const handleLogin = async (event) => {
-        event.preventDefault();
-
-        try {
-            const user = await loginService.login({
-                username,
-                password
-            });
-
-            window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user));
-            setUser(user);
-            setUsername('');
-            setPassword('');
-        } catch {
-            setErrorMessage('Wrong Credentials');
-            setTimeout(() => {
-                setErrorMessage(null);
-            }, 5000);
-        }
-    };
-
+const Login = ({ errorMessage, handleLogin, username, password, setUsername, setPassword }) => {
     return (
         <form onSubmit={handleLogin}>
             <div>
