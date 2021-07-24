@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+
 import Blog from './components/Blog';
 import Login from './components/Login';
 import Create from './components/Create';
@@ -8,7 +9,7 @@ import loginService from './services/login';
 
 const App = () => {
     const [blogs, setBlogs] = useState([]);
-    const [errorMessage, setErrorMessage] = useState('');
+    const [message, setMessage] = useState('');
     const [user, setUser] = useState(null);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -18,7 +19,9 @@ const App = () => {
     }, []);
 
     useEffect(() => {
-        const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser');
+        const loggedUserJSON = window.localStorage.getItem(
+            'loggedBlogAppUser'
+        );
         if (loggedUserJSON) {
             const user = JSON.parse(loggedUserJSON);
             setUser(user);
@@ -32,18 +35,21 @@ const App = () => {
         try {
             const user = await loginService.login({
                 username,
-                password
+                password,
             });
 
-            window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user));
+            window.localStorage.setItem(
+                'loggedBlogAppUser',
+                JSON.stringify(user)
+            );
             blogService.setToken(user.token);
             setUser(user);
             setUsername('');
             setPassword('');
         } catch {
-            setErrorMessage('Wrong Credentials');
+            setMessage('Wrong username or password');
             setTimeout(() => {
-                setErrorMessage(null);
+                setMessage(null);
             }, 5000);
         }
     };
@@ -57,16 +63,18 @@ const App = () => {
 
     if (user === null)
         return (
-            <Login
-                errorMessage={errorMessage}
-                setErrorMessage={setErrorMessage}
-                setUser={setUser}
-                handleLogin={handleLogin}
-                username={username}
-                setUsername={setUsername}
-                password={password}
-                setPassword={setPassword}
-            />
+            <div>
+                <Login
+                    message={message}
+                    setMessage={setMessage}
+                    setUser={setUser}
+                    handleLogin={handleLogin}
+                    username={username}
+                    setUsername={setUsername}
+                    password={password}
+                    setPassword={setPassword}
+                />
+            </div>
         );
 
     return (
@@ -79,7 +87,13 @@ const App = () => {
             <button onClick={handleLogout}>log out</button>
 
             <h3>create new</h3>
-            <Create setBlogs={setBlogs} user={user} blogs={blogs} />
+            <Create
+                setBlogs={setBlogs}
+                user={user}
+                blogs={blogs}
+                message={message}
+                setMessage={setMessage}
+            />
 
             <h3>blogs</h3>
             {blogs.map((blog) => (

@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
+import Message from '../components/Message';
 
-const Login = ({ errorMessage, handleLogin, username, password, setUsername, setPassword }) => {
+const Login = ({
+    message,
+    handleLogin,
+    username,
+    password,
+    setUsername,
+    setPassword,
+}) => {
     return (
         <form onSubmit={handleLogin}>
             <div>
                 <h3>log in to application</h3>
-                <p> {errorMessage}</p>
+                <Message message={message} />
                 username &nbsp;
                 <input
                     type="text"
@@ -18,7 +26,12 @@ const Login = ({ errorMessage, handleLogin, username, password, setUsername, set
             </div>
             <div>
                 password &nbsp;
-                <input type="text" value={password} name="Password" onChange={({ target }) => setPassword(target.value)} />
+                <input
+                    type="text"
+                    value={password}
+                    name="Password"
+                    onChange={({ target }) => setPassword(target.value)}
+                />
             </div>
             <button type="submit">login</button>
         </form>
