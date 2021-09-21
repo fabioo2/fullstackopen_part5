@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import Blog from './components/Blog';
 import Login from './components/Login';
 import Create from './components/Create';
+import Togglable from './components/Togglable';
 
 import blogService from './services/blogs';
 import loginService from './services/login';
@@ -19,15 +20,42 @@ const App = () => {
     }, []);
 
     useEffect(() => {
-        const loggedUserJSON = window.localStorage.getItem(
-            'loggedBlogAppUser'
-        );
+        const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser');
         if (loggedUserJSON) {
             const user = JSON.parse(loggedUserJSON);
             setUser(user);
             blogService.setToken(user.token);
         }
     }, []);
+
+    const addBlog = (title, url) => {
+        blogFormRef.current.toggleVisibility();
+
+        const blogObject = {
+            title,
+            url,
+            author: user.name,
+        };
+
+        blogService
+            .create(blogObject)
+            .then((returnedBlog) => {
+                setBlogs(blogs.concat(returnedBlog));
+
+                setMessage(`blog titled ${returnedBlog.title} was successfully created`);
+                setTimeout(() => {
+                    setMessage(null);
+                }, 5000);
+            })
+            .catch((error) => {
+                setMessage(`blog was not created. Error: ${error}`);
+                setTimeout(() => {
+                    setMessage(null);
+                }, 5000);
+            });
+    };
+
+    const blogFormRef = useRef();
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -38,10 +66,7 @@ const App = () => {
                 password,
             });
 
-            window.localStorage.setItem(
-                'loggedBlogAppUser',
-                JSON.stringify(user)
-            );
+            window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user));
             blogService.setToken(user.token);
             setUser(user);
             setUsername('');
@@ -87,13 +112,9 @@ const App = () => {
             <button onClick={handleLogout}>log out</button>
 
             <h3>create new</h3>
-            <Create
-                setBlogs={setBlogs}
-                user={user}
-                blogs={blogs}
-                message={message}
-                setMessage={setMessage}
-            />
+            <Togglable buttonLabel="create blog" ref={blogFormRef}>
+                <Create createBlog={addBlog} />
+            </Togglable>
 
             <h3>blogs</h3>
             {blogs.map((blog) => (
