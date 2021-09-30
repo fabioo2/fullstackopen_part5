@@ -1,14 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Message from '../components/Message';
 
-const Login = ({
-    message,
-    handleLogin,
-    username,
-    password,
-    setUsername,
-    setPassword,
-}) => {
+const Login = ({ message, handleLogin, username, password, setUsername, setPassword }) => {
+    Login.propTypes = {
+        handleLogin: PropTypes.func.isRequired,
+        setUsername: PropTypes.func.isRequired,
+        username: PropTypes.string.isRequired,
+        password: PropTypes.string.isRequired,
+    };
+
     return (
         <form onSubmit={handleLogin}>
             <div>
@@ -26,12 +27,7 @@ const Login = ({
             </div>
             <div>
                 password &nbsp;
-                <input
-                    type="text"
-                    value={password}
-                    name="Password"
-                    onChange={({ target }) => setPassword(target.value)}
-                />
+                <input type="text" value={password} name="Password" onChange={({ target }) => setPassword(target.value)} />
             </div>
             <button type="submit">login</button>
         </form>

@@ -73,7 +73,7 @@ const App = () => {
             .update(id, blogObject)
             .then((returnedBlog) => {
                 setBlogs(blogs.map((currentBlog) => (currentBlog.id !== returnedBlog.id ? currentBlog : returnedBlog)));
-                setMessage(`blog was liked.`);
+                setMessage('blog was liked.');
                 setTimeout(() => {
                     setMessage(null);
                 }, 5000);
@@ -114,10 +114,10 @@ const App = () => {
             setUser(user);
             setUsername('');
             setPassword('');
-        } catch {
+        } catch (error) {
             setMessage('Wrong username or password');
             setTimeout(() => {
-                setMessage(null);
+                setMessage('error:', error);
             }, 5000);
         }
     };
