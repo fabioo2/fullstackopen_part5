@@ -16,7 +16,12 @@ const App = () => {
     const [password, setPassword] = useState('');
 
     useEffect(() => {
-        blogService.getAll().then((blogs) => setBlogs(blogs));
+        blogService.getAll().then((blogs) => {
+            const sortedByLikes = blogs.sort((a, b) => {
+                return b.likes - a.likes;
+            });
+            setBlogs(sortedByLikes);
+        });
     }, []);
 
     useEffect(() => {
@@ -53,6 +58,44 @@ const App = () => {
                     setMessage(null);
                 }, 5000);
             });
+    };
+
+    const addLike = (id, blog) => {
+        const blogObject = {
+            user: blog.user.id,
+            url: blog.url,
+            author: blog.author,
+            title: blog.title,
+            likes: blog.likes + 1,
+        };
+        console.log(blogObject);
+        blogService
+            .update(id, blogObject)
+            .then((returnedBlog) => {
+                setBlogs(blogs.map((currentBlog) => (currentBlog.id !== returnedBlog.id ? currentBlog : returnedBlog)));
+                setMessage(`blog was liked.`);
+                setTimeout(() => {
+                    setMessage(null);
+                }, 5000);
+            })
+            .catch((error) => {
+                setMessage(`blog was not liked. Error: ${error}`);
+                setTimeout(() => {
+                    setMessage(null);
+                }, 5000);
+            });
+    };
+
+    const deleteBlog = async (id) => {
+        const deletedBlog = await blogService.deleteBlog(id);
+
+        if (deletedBlog) {
+            const updatedBlogList = blogs.filter((blog) => {
+                return blog.id !== id;
+            });
+
+            setBlogs(updatedBlogList);
+        }
     };
 
     const blogFormRef = useRef();
@@ -105,7 +148,7 @@ const App = () => {
     return (
         <div>
             <h2>Blog App</h2>
-
+            <p>{message}</p>
             <p>
                 <b>{user.name} is logged in</b>
             </p>
@@ -116,9 +159,9 @@ const App = () => {
                 <Create createBlog={addBlog} />
             </Togglable>
 
-            <h3>blogs</h3>
+            <h3>blogs sorted by likes</h3>
             {blogs.map((blog) => (
-                <Blog key={blog.id} blog={blog} />
+                <Blog key={blog.id} blog={blog} blogs={blogs} addLike={addLike} deleteBlogItem={deleteBlog} user={user} />
             ))}
         </div>
     );
