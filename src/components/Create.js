@@ -19,6 +19,7 @@ const Create = ({ createBlog }) => {
                 <div style={{ marginBottom: '5px' }}>
                     title: &nbsp;
                     <input
+                        id="title"
                         value={title}
                         onChange={({ target }) => {
                             setTitle(target.value);
@@ -26,6 +27,7 @@ const Create = ({ createBlog }) => {
                     />
                     &nbsp; url: &nbsp;
                     <input
+                        id="url"
                         value={url}
                         onChange={({ target }) => {
                             setUrl(target.value);

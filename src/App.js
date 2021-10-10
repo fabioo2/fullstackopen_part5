@@ -161,7 +161,7 @@ const App = () => {
 
             <h3>blogs sorted by likes</h3>
             {blogs.map((blog) => (
-                <Blog key={blog.id} blog={blog} blogs={blogs} addLike={addLike} deleteBlogItem={deleteBlog} user={user} />
+                <Blog key={blog.id} blog={blog} addLike={addLike} deleteBlogItem={deleteBlog} user={user} />
             ))}
         </div>
     );
