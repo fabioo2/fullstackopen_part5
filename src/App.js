@@ -117,7 +117,7 @@ const App = () => {
         } catch (error) {
             setMessage('Wrong username or password');
             setTimeout(() => {
-                setMessage('error:', error);
+                setMessage('');
             }, 5000);
         }
     };
@@ -152,7 +152,9 @@ const App = () => {
             <p>
                 <b>{user.name} is logged in</b>
             </p>
-            <button onClick={handleLogout}>log out</button>
+            <button id="logout-button" onClick={handleLogout}>
+                log out
+            </button>
 
             <h3>create new</h3>
             <Togglable buttonLabel="create blog" ref={blogFormRef}>

@@ -1,7 +1,7 @@
 import React from 'react';
 const Message = ({ message }) => (
     <div>
-        <p style={{ marginBottom: '10px' }}>
+        <p id="message" style={{ marginBottom: '10px', color: 'red' }}>
             <b>{message}</b>
         </p>
     </div>
