@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Switch, Route, useRouteMatch } from 'react-router-dom';
+import { Switch, Route, useRouteMatch, Redirect } from 'react-router-dom';
 
+import BlogList from './components/BlogList';
 import Blog from './components/Blog';
 import Login from './components/Login';
 import Create from './components/Create';
@@ -41,8 +42,11 @@ const App = () => {
 
     const blogFormRef = useRef();
 
-    const match = useRouteMatch('/users/:id');
-    const user = match ? users.find((user) => user.id === match.params.id) : null;
+    const userMatch = useRouteMatch('/users/:id');
+    const user = userMatch ? users.find((user) => user.id === userMatch.params.id) : null;
+
+    const blogmatch = useRouteMatch('/blogs/:id');
+    const blog = blogmatch ? blogs.find((blog) => blog.id === blogmatch.params.id) : null;
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -99,16 +103,17 @@ const App = () => {
                 <Route path="/users">
                     <UserList users={users} />
                 </Route>
+                <Route path="/blogs/:id">
+                    <Blog blog={blog} />
+                </Route>
+                <Route path="/blogs">
+                    <Redirect to="/" />
+                </Route>
                 <Route path="/">
-                    <h3>create new</h3>
                     <Togglable buttonLabel="create blog" ref={blogFormRef}>
                         <Create blogFormRef={blogFormRef} />
                     </Togglable>
-
-                    <h3>blogs sorted by likes</h3>
-                    {blogs.map((blog) => (
-                        <Blog key={blog.id} blog={blog} login={login} />
-                    ))}
+                    <BlogList blogs={blogs} />
                 </Route>
             </Switch>
         </div>
