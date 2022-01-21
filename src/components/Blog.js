@@ -32,8 +32,11 @@ const Blog = ({ blog }) => {
     const updateBlog = () => {
         addLike(blog.id, blog);
     };
+    const updateBlogComment = () => {
+        handleAddComment(blog.id, blog);
+    };
 
-    const handleAddComment = async () => {
+    const handleAddComment = async (id, blog) => {
         const blogObject = {
             user: blog.user.id,
             url: blog.url,
@@ -43,8 +46,8 @@ const Blog = ({ blog }) => {
             comments: [...blog.comments, { comment: newComment.value }],
         };
         try {
-            const updatedBlog = await dispatch(likeBlog(blog.id, blogObject));
-            dispatch(setNotification(`blog ${updatedBlog.title} was liked`, 2));
+            const updatedBlog = await dispatch(likeBlog(id, blogObject));
+            dispatch(setNotification(`blog ${updatedBlog.title} was commented`, 4));
         } catch (error) {
             dispatch(setNotification('blog was not liked. error: ', error), 2);
         }
@@ -55,11 +58,11 @@ const Blog = ({ blog }) => {
             <h2>{blog.title}</h2>
             <a href={`${blog.url}`}>{blog.url}</a>
             <p>
-                {blog.likes} <button onClick={updateBlog}>like</button>
+                likes: {blog.likes} <button onClick={updateBlog}>like</button>
             </p>
             <p>added by {blog.author}</p>
             <h3>comments</h3>
-            <form onSubmit={handleAddComment}>
+            <form onSubmit={updateBlogComment}>
                 <div>
                     <input {...newComment} /> <button>add comment</button>
                 </div>
