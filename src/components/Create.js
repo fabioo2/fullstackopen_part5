@@ -37,6 +37,7 @@ const Create = ({ blogFormRef }) => {
                 <div style={{ marginBottom: '5px' }}>
                     title: &nbsp;
                     <input
+                        type="text"
                         id="title"
                         value={title}
                         onChange={({ target }) => {
@@ -45,6 +46,7 @@ const Create = ({ blogFormRef }) => {
                     />
                     &nbsp; url: &nbsp;
                     <input
+                        type="text"
                         id="url"
                         value={url}
                         onChange={({ target }) => {
@@ -53,7 +55,9 @@ const Create = ({ blogFormRef }) => {
                     />
                 </div>
                 <div style={{ marginBottom: '5px' }}></div>
-                <button type="submit">create</button>
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">
+                    create
+                </button>
             </form>
         </div>
     );

@@ -87,12 +87,12 @@ const App = () => {
             <div>
                 <Menu />
             </div>
-            <h2>Blog App</h2>
+            <h2 className="text-3xl font-bold underline">Blog App</h2>
             <p>{message}</p>
             <p>
                 <b>{login.name} is logged in</b>
             </p>
-            <button id="logout-button" onClick={handleLogout}>
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" id="logout-button" onClick={handleLogout}>
                 log out
             </button>
 

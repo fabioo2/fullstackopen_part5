@@ -30,7 +30,7 @@ const Login = ({ message, handleLogin, username, password, setUsername, setPassw
                 password &nbsp;
                 <input id="password" type="text" value={password} name="Password" onChange={({ target }) => setPassword(target.value)} />
             </div>
-            <button id="login-button" type="submit">
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" id="login-button" type="submit">
                 login
             </button>
         </form>
