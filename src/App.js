@@ -6,9 +6,10 @@ import Blog from './components/Blog';
 import Login from './components/Login';
 import Create from './components/Create';
 import Togglable from './components/Togglable';
-import Menu from './components/Menu';
+import Navbar from './components/Navbar';
 import UserList from './components/UserList';
 import User from './components/User';
+import Message from './components/Message';
 
 import blogService from './services/blogs';
 
@@ -36,7 +37,6 @@ const App = () => {
     }, [dispatch]);
 
     const blogs = useSelector((state) => state.blogs);
-    const message = useSelector((state) => state.notification);
     const login = useSelector((state) => state.login);
     const users = useSelector((state) => state.users);
 
@@ -85,16 +85,10 @@ const App = () => {
     return (
         <div>
             <div>
-                <Menu />
+                <Navbar handleLogout={handleLogout} login={login} />
             </div>
-            <h2 className="text-3xl font-bold underline">Blog App</h2>
-            <p>{message}</p>
-            <p>
-                <b>{login.name} is logged in</b>
-            </p>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" id="logout-button" onClick={handleLogout}>
-                log out
-            </button>
+
+            <Message />
 
             <Switch>
                 <Route path="/users/:id">
@@ -110,10 +104,13 @@ const App = () => {
                     <Redirect to="/" />
                 </Route>
                 <Route path="/">
-                    <Togglable buttonLabel="create blog" ref={blogFormRef}>
-                        <Create blogFormRef={blogFormRef} />
-                    </Togglable>
-                    <BlogList blogs={blogs} />
+                    <div className="container mx-auto">
+                        <Togglable buttonLabel="create blog" ref={blogFormRef}>
+                            <Create blogFormRef={blogFormRef} />
+                        </Togglable>
+
+                        <BlogList blogs={blogs} />
+                    </div>
                 </Route>
             </Switch>
         </div>

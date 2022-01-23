@@ -1,10 +1,17 @@
 import React from 'react';
-const Message = ({ message }) => (
-    <div>
-        <p id="message" style={{ marginBottom: '10px', color: 'red' }}>
-            <b>{message}</b>
+import { useSelector } from 'react-redux';
+
+const Message = () => {
+    const message = useSelector((state) => state.notification);
+    if (!message) {
+        return null;
+    }
+
+    return (
+        <p className="m-4 p-4 border-solid rounded border-2 border-indigo-600 bg-indigo-300" role="alert">
+            {message}
         </p>
-    </div>
-);
+    );
+};
 
 export default Message;
